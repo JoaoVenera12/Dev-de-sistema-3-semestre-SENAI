@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciamento de Vagas de Estacionamento</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <main>
+        <h1>Reserva de Vaga</h1>
+        <form id="formReservarVaga">
+            <div class="form-group">
+                <label for="placaVeiculo">Placa do veículo:</label>
+                <input type="text" id="placaVeiculo" placeholder="XXX-0000" required>
+
+                <label for="numeroApartamento">Número do apartamento:</label>
+                <input type="text" id="numeroApartamento" placeholder="001" required>
+
+                <label for="blocoApartamento">Bloco do apartamento:</label>
+                <input type="text" id="blocoApartamento" placeholder="A" required>
+
+                <label for="numeroVaga">Número da vaga:</label>
+                <input type="number" id="numeroVaga" placeholder="01" min="01" max="50" required>
+
+            </div>
+            <button id="reservarVaga" type="submit">Reservar Vaga</button>
+        </form>
+        <div class="navigation">
+            <a href="cadastrar-veiculo.html">Cadastrar Veículo</a>
+            <a href="consultar-vagas.html">Consultar Vagas</a>
+        </div>
+    </main>
+
+    <script type="module" src="index.js"></script>
+    <script  src="api.js"></script>
+</body>
+</html>

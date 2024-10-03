@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Veículos</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <main>
+        <h1>Cadastrar Veículo</h1>
+        <form id="formCadastrarVeiculo">
+            <div class="form-group">
+                <label for="placaVeiculo">Placa do veículo:</label>
+                <input type="text" id="placaVeiculo" placeholder="XXX0000 ou XXX0X00"  required style="text-transform: uppercase">
+
+                <label for="nomeProprietario">Nome do proprietário:</label>
+                <input type="text" id="nomeProprietario" placeholder="João da Silva" required>
+
+                <label for="modeloVeiculo">Modelo do veículo:</label>
+                <input type="text" id="modeloVeiculo" placeholder="Uno" required>
+
+                <label for="corVeiculo">Cor do veículo:</label>
+                <input type="text" id="corVeiculo" placeholder="Branco" required>
+            </div>
+            <button type="submit" id="botaoCadastrarVeiculo" >Cadastrar Veículo</button>
+        </form>
+        <div class="navigation">
+            <a href="index.html">Voltar</a>
+        </div>
+    </main>
+
+    <script type="module" src="cadastrar-veiculo.js"></script>
+</body>
+</html>
