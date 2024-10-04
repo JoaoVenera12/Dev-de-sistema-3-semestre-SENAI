@@ -15,7 +15,15 @@ export async function apiCadastrarUsuario(usuario) {
             body: JSON.stringify(usuario)
         });
         if (!response.ok) throw new Error('Erro ao cadastrar usuário');
-        return await response.json();
+        if (response.ok) {
+            document.getElementById("mensagemSucesso").style.display = "block";
+            document.getElementById("mensagemErro").style.display = "none";
+            return await response.json();
+        } else {
+            document.getElementById("mensagemErro").style.display = "block";
+            document.getElementById("mensagemSucesso").style.display = "none";
+            throw new Error('Erro ao cadastrar');
+        }
     } catch (error) {
         console.error('Erro ao cadastrar usuário:', error);
         throw error;
