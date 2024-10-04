@@ -1,163 +1,164 @@
-const cadastrarBotao = document.getElementById('cadastrarTarefa');
-const consultarBotao = document.getElementById('consultarTarefa');
-const atualizarBotao = document.getElementById('atualizarTarefa');
-const deletarBotao = document.getElementById('deletarTarefa');
-const codApi = "6719b515254d4cf38d1117d9cab6ee6d";
-const id = "66fdd849fe837603e816de52";
+const id = "6955e9cbaff54de39a9d3ef08ebcfd91";
+const baseUrl = "https://crudcrud.com/api/"+id;
+const veiculosEndpoint = `${baseUrl}/veiculos`; 
 
+const headers = { 'Content-Type': 'application/json' };
 
-export function apiReservarVaga(){
-    const tarefa ={
-        apartamento : "001",
-        bloco : "A",
-        numeroVaga : "012",
-        placa : "HMJ9443"
+// Funções de interação com a API
 
-    };
-    fetch('https://crudcrud.com/api/'+codApi+'/reservas',{
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(tarefa)
-    })
-};
-
-export function apiAtualizarVaga(){
-    const tarefa ={
-        apartamento : "001",
-        bloco : "A",
-        numeroVaga : "012",
-        placa : "HMJ9443"
-
-    };
-    fetch('https://crudcrud.com/api/'+codApi+'/reservas/'+id,{
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(tarefa)
-    })
-};
-
-export function apiConsultarVaga(){
-    
-    fetch('https://crudcrud.com/api/'+codApi+'/reservas/',{
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
-        }        
-    }).then(response => {
-        if (!response.ok) {
-            throw new Error('Erro na conexão com a internet');
-        }
-        return response.json(); 
-    })
-    .then(data => {
-        console.log(data); 
-        return data;
-    })
-    .catch(error => {
-        console.error('Erro:', error);
-    });
-};
-
-export function apiDeletarVaga(){
-    const tarefa ={
-        apartamento : "001",
-        bloco : "A",
-        numeroVaga : "012",
-        placa : "HMJ9443"
-
-    };
-    fetch('https://crudcrud.com/api/'+codApi+'/reservas',{
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(tarefa)
-    })
-};
-
-export function apiCadastrarVeiculo(placa,nome,modelo,cor){
-    const tarefa ={
-        placa : placa,
-        nome : nome,
-        modelo : modelo,
-        cor : cor        
-    };
-    console.log(tarefa)
-    console.log("api cadastrar")
-    fetch('https://crudcrud.com/api/'+codApi+'/veiculos',{
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(tarefa)
-    })
-};
-
-export function apiAtualizarVeiculo(placa,nome,modelo,cor,id){
-    const tarefa ={
-        placa : placa,
-        nome : nome,
-        modelo : modelo,
-        cor : cor 
-    };
-    fetch('https://crudcrud.com/api/'+codApi+'/veiculos/'+id,{
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(tarefa)
-    })
-};
-
-export function apiConsultarVeiculo(){
-    
-    fetch('https://crudcrud.com/api/'+codApi+'/veiculos/',{
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
-        }        
-    }).then(response => {
-        if (!response.ok) {
-            throw new Error('Erro na conexão com a internet');
-        }
-        return response.json(); 
-    })
-    .then(data => {
-        console.log(data); 
-        alert(data);
-        return data;
-    })
-    .catch(error => {
-        console.error('Erro:', error);
-    });
-};
-
-export function apiConsultarPlaca(){
-
-    fetch('https://crudcrud.com/api/'+codApi+'/veiculos/',{
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
-        }   
-    }).then(data =>{
-        const veiculo = data;
-        console.log(veiculo);
-        const placaExistente = veiculo.find(veiculo => veiculo.placa === placaVeiculo);
-        console.log(placaExistente);
-    })        
-
+// Usuários
+export async function apiCadastrarUsuario(usuario) {
+    try {
+        const response = await fetch(`${baseUrl}/usuarios`, {
+            method: 'POST',
+            headers,
+            body: JSON.stringify(usuario)
+        });
+        if (!response.ok) throw new Error('Erro ao cadastrar usuário');
+        return await response.json();
+    } catch (error) {
+        console.error('Erro ao cadastrar usuário:', error);
+        throw error;
+    }
 }
 
-export function apiDeletarVeiculo(){
-    fetch('https://crudcrud.com/api/'+codApi+'/veiculos/'+id,{
-        method: 'DELETE',
+export async function apiConsultarUsuarios() {
+    try {
+        const response = await fetch(`${baseUrl}/usuarios`, {
+            method: 'GET',
+            headers
+        });
+        if (!response.ok) throw new Error('Erro ao consultar usuários');
+        return await response.json();
+    } catch (error) {
+        console.error('Erro ao consultar usuários:', error);
+        throw error;
+    }
+}
+
+// Função para verificar se a placa já está cadastrada
+export async function verificarPlacaRepetida(placa) {
+    try {
+        const response = await fetch(veiculosEndpoint);
+        const veiculos = await response.json();
+
+        return veiculos.some(veiculo => veiculo.placa === placa);
+    } catch (error) {
+        console.error("Erro ao verificar placa duplicada:", error);
+        return false; 
+    }
+}
+
+// Função para cadastrar veículo
+export async function apiCadastrarVeiculo(veiculo) {
+    const response = await fetch(veiculosEndpoint, {
+        method: "POST",
         headers: {
-            'Content-Type': 'application/json'
+            "Content-Type": "application/json",
         },
-        body: JSON.stringify(tarefa)
-    })
-};
+        body: JSON.stringify(veiculo),
+    });
+    if (!response.ok) {
+        throw new Error("Erro ao cadastrar veículo");
+    }
+}
+
+export async function apiConsultarVeiculos() {
+    try {
+        const response = await fetch(`${baseUrl}/veiculos`, {
+            method: 'GET',
+            headers
+        });
+        if (!response.ok) throw new Error('Erro ao consultar veículos');
+        return await response.json();
+    } catch (error) {
+        console.error('Erro ao consultar veículos:', error);
+        throw error;
+    }
+}
+
+export async function apiAtualizarVeiculo(id, veiculoAtualizado) {
+    try {
+        const response = await fetch(`${baseUrl}/veiculos/${id}`, {
+            method: 'PUT',
+            headers,
+            body: JSON.stringify(veiculoAtualizado)
+        });
+        if (!response.ok) throw new Error('Erro ao atualizar veículo');
+        return await response.json();
+    } catch (error) {
+        console.error('Erro ao atualizar veículo:', error);
+        throw error;
+    }
+}
+
+export async function apiDeletarVeiculo(id) {
+    try {
+        const response = await fetch(`${baseUrl}/veiculos/${id}`, {
+            method: 'DELETE',
+            headers
+        });
+        if (!response.ok) throw new Error('Erro ao deletar veículo');
+    } catch (error) {
+        console.error('Erro ao deletar veículo:', error);
+        throw error;
+    }
+}
+
+// Vagas
+export async function apiCadastrarVaga(vaga) {
+    try {
+        const response = await fetch(`${baseUrl}/vagas`, {
+            method: 'POST',
+            headers,
+            body: JSON.stringify(vaga)
+        });
+        if (!response.ok) throw new Error('Erro ao cadastrar vaga');
+        return await response.json();
+    } catch (error) {
+        console.error('Erro ao cadastrar vaga:', error);
+        throw error;
+    }
+}
+
+export async function apiConsultarVagas() {
+    try {
+        const response = await fetch(`${baseUrl}/vagas`, {
+            method: 'GET',
+            headers
+        });
+        if (!response.ok) throw new Error('Erro ao consultar vagas');
+        return await response.json();
+    } catch (error) {
+        console.error('Erro ao consultar vagas:', error);
+        throw error;
+    }
+}
+
+export async function apiAtualizarVaga(id, vagaAtualizada) {
+    try {
+        const response = await fetch(`${baseUrl}/vagas/${id}`, {
+            method: 'PUT',
+            headers,
+            body: JSON.stringify(vagaAtualizada)
+        });
+        if (!response.ok) throw new Error('Erro ao atualizar vaga');
+        return await response.json();
+    } catch (error) {
+        console.error('Erro ao atualizar vaga:', error);
+        throw error;
+    }
+}
+
+export async function apiDeletarVaga(id) {
+    try {
+        const response = await fetch(`${baseUrl}/vagas/${id}`, {
+            method: 'DELETE',
+            headers
+        });
+        if (!response.ok) throw new Error('Erro ao deletar vaga');
+    } catch (error) {
+        console.error('Erro ao deletar vaga:', error);
+        throw error;
+    }
+}
